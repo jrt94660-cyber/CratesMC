@@ -1,0 +1,15 @@
+name: CratesMC
+version: 1.0.0
+main: dev.flovex.crates.CratesMC
+api-version: '1.21'
+softdepend: [PlaceholderAPI]
+commands:
+  sc:
+    description: CratesMC management and crate commands
+    aliases: [crate, crates, smpcrate, smpcrates]
+    permission: cratesmc.use
+permissions:
+  cratesmc.use:
+    default: true
+  cratesmc.admin:
+    default: op
