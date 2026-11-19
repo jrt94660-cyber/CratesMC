@@ -1,7 +1,7 @@
 plugins { id 'java' }
 
 group = 'dev.flovex'
-version = '1.0.1'
+version = '1.0.4'
 
 java {
     toolchain {
