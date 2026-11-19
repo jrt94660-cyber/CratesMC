@@ -17,11 +17,11 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.NamespacedKey;
 import java.util.*;
 
-public final class CratesMC extends JavaPlugin implements Listener, CommandExecutor {
+public final class CratesMC extends JavaPlugin implements Listener, CommandExecutor, TabCompleter {
   private NamespacedKey crateKey;
   private final Map<UUID,String> bindMode=new HashMap<>(), opened=new HashMap<>();
   private final Map<UUID,Inventory> menus=new HashMap<>();
-  @Override public void onEnable(){saveDefaultConfig();crateKey=new NamespacedKey(this,"crate-key");getServer().getPluginManager().registerEvents(this,this);getCommand("sc").setExecutor(this);getLogger().info("License-free CratesMC enabled.");}
+  @Override public void onEnable(){saveDefaultConfig();crateKey=new NamespacedKey(this,"crate-key");getServer().getPluginManager().registerEvents(this,this);getCommand("sc").setExecutor(this);getCommand("sc").setTabCompleter(this);getLogger().info("License-free CratesMC enabled.");}
   private String color(String s){return ChatColor.translateAlternateColorCodes('&',s==null?"":s);}
   private void message(CommandSender s,String text){s.sendMessage(color(getConfig().getString("messages.prefix","&8[&6Crates&8] &r")+text));}
   private boolean admin(CommandSender s){if(s.hasPermission("cratesmc.admin"))return true;message(s,getConfig().getString("messages.no-permission","&cNo permission."));return false;}
@@ -40,6 +40,26 @@ case "keyclear":if(args.length<2){message(sender,"&cUsage: /sc keyclear <player>
 case "keylist":if(args.length<2){message(sender,"&cUsage: /sc keylist <player>");break;}Player list=Bukkit.getPlayerExact(args[1]);if(list==null){message(sender,"&cPlayer must be online.");break;}message(sender,"&f"+list.getName()+" keys:");for(String id:crateNames()){int count=0;for(ItemStack it:list.getInventory().getContents())if(it!=null&&id.equalsIgnoreCase(keyOf(it)))count+=it.getAmount();message(sender,"&7"+id+": &f"+count);}break;
 case "reload":reloadConfig();message(sender,"&aReloaded.");break;
 default:message(sender,"&cUnknown subcommand. /sc for help.");}}catch(Exception ex){message(sender,"&cInvalid arguments.");getLogger().warning("Command error: "+ex.getMessage());}return true;}
+  @Override public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+    List<String> options = new ArrayList<>();
+    if (args.length == 1) {
+      options.addAll(Arrays.asList("bind","givekey","keyall","realkeygive","realkeyall","view","keylist","keytake","keyclear","reload"));
+      if (!sender.hasPermission("cratesmc.admin")) options.removeAll(Arrays.asList("bind","givekey","keyall","realkeygive","realkeyall","keylist","keytake","keyclear","reload"));
+    } else if (args.length == 2) {
+      String sub=args[0].toLowerCase(Locale.ROOT);
+      if (Arrays.asList("bind","view","keyall","realkeyall").contains(sub)) options.addAll(crateNames());
+      else if (Arrays.asList("givekey","realkeygive","keylist","keytake","keyclear").contains(sub)) for (Player online : Bukkit.getOnlinePlayers()) options.add(online.getName());
+    } else if (args.length == 3) {
+      String sub=args[0].toLowerCase(Locale.ROOT);
+      if (Arrays.asList("givekey","realkeygive","keytake").contains(sub)) options.addAll(crateNames());
+      else if (Arrays.asList("keyall","realkeyall").contains(sub)) options.addAll(Arrays.asList("1","5","10","32","64"));
+    } else if (args.length == 4 && Arrays.asList("givekey","realkeygive","keytake").contains(args[0].toLowerCase(Locale.ROOT))) {
+      options.addAll(Arrays.asList("1","5","10","32","64"));
+    }
+    String prefix=args[args.length-1].toLowerCase(Locale.ROOT);
+    options.removeIf(s -> !s.toLowerCase(Locale.ROOT).startsWith(prefix));
+    return options;
+  }
   @EventHandler public void interact(PlayerInteractEvent e){if(e.getAction()!=Action.RIGHT_CLICK_BLOCK)return;Player p=e.getPlayer();String binding=bindMode.get(p.getUniqueId());Block block=e.getClickedBlock();if(binding!=null){if(p.isSneaking()){bindMode.remove(p.getUniqueId());message(p,"&cBinding cancelled.");return;}if(block!=null){getConfig().set("settings.bound-blocks."+block.getWorld().getName()+"."+block.getX()+"_"+block.getY()+"_"+block.getZ(),binding);saveConfig();bindMode.remove(p.getUniqueId());e.setCancelled(true);message(p,"&aCrate block bound.");}return;}String key=keyOf(e.getItem());if(key!=null&&crate(key)!=null){e.setCancelled(true);openMenu(p,key,true);return;}if(block!=null){String path="settings.bound-blocks."+block.getWorld().getName()+"."+block.getX()+"_"+block.getY()+"_"+block.getZ();String name=getConfig().getString(path);if(name!=null){e.setCancelled(true);openMenu(p,name,false);}}}
   @EventHandler public void click(InventoryClickEvent e){UUID uid=e.getWhoClicked().getUniqueId();Inventory menu=menus.get(uid);if(menu==null||e.getView().getTopInventory()!=menu)return;e.setCancelled(true);int slot=e.getRawSlot();if(slot<0||slot>=menu.getSize())return;Player p=(Player)e.getWhoClicked();String crateName=opened.get(uid);ConfigurationSection crate=crate(crateName);if(crate==null)return;ConfigurationSection rewards=crate.getConfigurationSection("rewards");if(rewards==null)return;String rewardId=null;ConfigurationSection reward=null;for(String rid:rewards.getKeys(false)){ConfigurationSection r=rewards.getConfigurationSection(rid);if(r!=null&&r.getInt("slot",Math.max(0,Integer.parseInt(rid)-1))==slot){rewardId=rid;reward=r;break;}}if(reward==null)return;List<String> commands=reward.getStringList("commands");if(commands.isEmpty()){ItemStack item=rewardIcon(reward);Map<Integer,ItemStack> leftovers=p.getInventory().addItem(item);leftovers.values().forEach(it->p.getWorld().dropItemNaturally(p.getLocation(),it));}else for(String raw:commands)Bukkit.dispatchCommand(Bukkit.getConsoleSender(),raw.replace("%player%",p.getName()));p.closeInventory();message(p,getConfig().getString("messages.crate-opened","&aReward claimed!"));try{p.playSound(p.getLocation(),Sound.valueOf(getConfig().getString("settings.sounds.win","ENTITY_PLAYER_LEVELUP")),1f,1f);}catch(Exception ignored){}}
   @EventHandler public void close(InventoryCloseEvent e){UUID uid=e.getPlayer().getUniqueId();if(menus.get(uid)==e.getView().getTopInventory()){menus.remove(uid);opened.remove(uid);}}
