@@ -1,14 +1,10 @@
-settings:  key-material: WHITE_CANDLE
+settings:
+  key-material: WHITE_CANDLE
   key-default-name: '&f&l%crate% Key'
   key-default-lore:
     - '&7'
     - '&f● &7Redeem at spawn!'
-  opening:
-    animation: true
-    duration-ticks: 60
-  confirmation: true
   sounds:
-    click: UI_BUTTON_CLICK
     win: ENTITY_PLAYER_LEVELUP
   bound-blocks: {}
 messages:
@@ -17,3 +13,76 @@ messages:
   crate-missing: '&cThat crate does not exist.'
   key-received: '&aYou received &f%amount% &a%crate% key(s).'
   crate-opened: '&aCrate opened!'
+crates:
+  common:
+    title: '&8ᴄʜᴏᴏsᴇ 1 ɪᴛᴇᴍ'
+    rows: 3
+    rewards:
+      1: { slot: 10, material: DIAMOND_HELMET, name: '&aCommon Helmet', amount: 1, enchantments: ['PROTECTION:1','RESPIRATION:2'] }
+      2: { slot: 11, material: DIAMOND_CHESTPLATE, name: '&aCommon Chestplate', amount: 1, enchantments: ['PROTECTION:1'] }
+      3: { slot: 12, material: DIAMOND_LEGGINGS, name: '&aCommon Leggings', amount: 1, enchantments: ['PROTECTION:1','SWIFT_SNEAK:2'] }
+      4: { slot: 13, material: DIAMOND_BOOTS, name: '&aCommon Boots', amount: 1, enchantments: ['PROTECTION:1','DEPTH_STRIDER:2','FEATHER_FALLING:2'] }
+      5: { slot: 14, material: DIAMOND_SWORD, name: '&aCommon Sword', amount: 1, enchantments: ['SHARPNESS:1','LOOTING:2'] }
+      6: { slot: 15, material: DIAMOND_PICKAXE, name: '&aCommon Pickaxe', amount: 1, enchantments: ['FORTUNE:1','EFFICIENCY:2'] }
+      7: { slot: 16, material: DIAMOND_SHOVEL, name: '&aCommon Shovel', amount: 1, enchantments: ['EFFICIENCY:3'] }
+  gold:
+    title: '&8ᴄʜᴏᴏsᴇ 1 ɪᴛᴇᴍ'
+    rows: 3
+    rewards:
+      1: { slot: 10, material: SPAWNER, name: '&6Cow Spawner', commands: ['give %player% cow_spawner 1'] }
+      2: { slot: 11, material: SPAWNER, name: '&6Spider Spawner', commands: ['give %player% spider_spawner 1'] }
+      3: { slot: 12, material: SPAWNER, name: '&6Zombie Piglin Spawner', commands: ['give %player% zombie_pigman_spawner 1'] }
+      4: { slot: 13, material: SPAWNER, name: '&6Skeleton Spawner', commands: ['give %player% skeleton_spawner 1'] }
+      5: { slot: 14, material: SPAWNER, name: '&6Blaze Spawner', commands: ['give %player% blaze_spawner 1'] }
+      6: { slot: 15, material: SPAWNER, name: '&6Creeper Spawner', commands: ['give %player% creeper_spawner 1'] }
+  crimson:
+    title: '&8ᴄʜᴏᴏsᴇ 1 ɪᴛᴇᴍ'
+    rows: 3
+    rewards:
+      1: { slot: 10, material: NETHERITE_HELMET, name: '&cCrimson Helmet', amount: 1, enchantments: ['PROTECTION:4','RESPIRATION:3','MENDING:1','THORNS:3','UNBREAKING:3'] }
+      2: { slot: 11, material: NETHERITE_CHESTPLATE, name: '&cCrimson Chestplate', amount: 1, enchantments: ['PROTECTION:4','MENDING:1','THORNS:3','UNBREAKING:3'] }
+      3: { slot: 12, material: NETHERITE_LEGGINGS, name: '&cCrimson Leggings', amount: 1, enchantments: ['PROTECTION:4','SWIFT_SNEAK:3','MENDING:1','THORNS:3','UNBREAKING:3'] }
+      4: { slot: 13, material: NETHERITE_BOOTS, name: '&cCrimson Boots', amount: 1, enchantments: ['PROTECTION:4','DEPTH_STRIDER:3','FEATHER_FALLING:4','MENDING:1','SOUL_SPEED:3','THORNS:3','UNBREAKING:3'] }
+      5: { slot: 14, material: NETHERITE_SWORD, name: '&cCrimson Sword', amount: 1, enchantments: ['SHARPNESS:5','LOOTING:3','FIRE_ASPECT:2','KNOCKBACK:2','MENDING:1','UNBREAKING:3'] }
+      6: { slot: 15, material: NETHERITE_PICKAXE, name: '&cCrimson Pickaxe', amount: 1, enchantments: ['MENDING:1','UNBREAKING:3','SILK_TOUCH:1','EFFICIENCY:5'] }
+      7: { slot: 16, material: NETHERITE_AXE, name: '&cCrimson Axe', amount: 1, enchantments: ['EFFICIENCY:5','MENDING:1','SHARPNESS:5','SILK_TOUCH:1','UNBREAKING:3'] }
+  prime:
+    title: '&8ᴄʜᴏᴏsᴇ 1 ɪᴛᴇᴍ'
+    rows: 3
+    rewards:
+      1: { slot: 10, material: NETHERITE_HELMET, name: '&bPrime Helmet', amount: 1, enchantments: ['MENDING:1','PROTECTION:4','RESPIRATION:3','UNBREAKING:3'] }
+      2: { slot: 11, material: NETHERITE_CHESTPLATE, name: '&bPrime Chestplate', amount: 1, enchantments: ['MENDING:1','PROTECTION:4','UNBREAKING:3'] }
+      3: { slot: 12, material: NETHERITE_LEGGINGS, name: '&bPrime Leggings', amount: 1, enchantments: ['BLAST_PROTECTION:4','MENDING:1','SWIFT_SNEAK:3','UNBREAKING:3'] }
+      4: { slot: 13, material: NETHERITE_BOOTS, name: '&bPrime Boots', amount: 1, enchantments: ['MENDING:1','SOUL_SPEED:3','UNBREAKING:3','PROTECTION:4','DEPTH_STRIDER:3','FEATHER_FALLING:4'] }
+      5: { slot: 14, material: NETHERITE_SWORD, name: '&bPrime Sword', amount: 1, enchantments: ['KNOCKBACK:1','MENDING:1','SHARPNESS:5','UNBREAKING:3','LOOTING:3'] }
+      6: { slot: 15, material: CROSSBOW, name: '&bPrime Crossbow', amount: 1, enchantments: ['MENDING:1','MULTISHOT:1','QUICK_CHARGE:3','UNBREAKING:3'] }
+      7: { slot: 16, material: ELYTRA, name: '&bPrime Elytra', amount: 1, enchantments: ['MENDING:1','UNBREAKING:3'] }
+  amethyst:
+    title: '&8ᴄʜᴏᴏsᴇ 1 ɪᴛᴇᴍ'
+    rows: 3
+    rewards:
+      1: { slot: 11, material: NETHERITE_AXE, name: '&5Amethyst Tree Chopper', amount: 1, enchantments: ['SHARPNESS:5','UNBREAKING:3','MENDING:1'], commands: ['tools give %player% treechopper'] }
+      2: { slot: 12, material: NETHERITE_AXE, name: '&5Amethyst Sell Axe', amount: 1, enchantments: ['MENDING:1','EFFICIENCY:5','UNBREAKING:3'], commands: ['tools give %player% sellaxe'] }
+      3: { slot: 13, material: NETHERITE_PICKAXE, name: '&5Amethyst Drill', amount: 1, enchantments: ['MENDING:1','EFFICIENCY:5','UNBREAKING:3'], commands: ['tools give %player% drill'] }
+      4: { slot: 14, material: NETHERITE_SHOVEL, name: '&5Amethyst Multitool', amount: 1, enchantments: ['MENDING:1','EFFICIENCY:5','UNBREAKING:3'], commands: ['tools give %player% multitool'] }
+keys:
+  common:
+    material: WHITE_CANDLE
+    name: '&f&lCommon Key'
+    lore: ['&7','&f● &7Redeem at spawn!','&f● &7Buy keys in &f&n/shop']
+  gold:
+    material: WHITE_CANDLE
+    name: '&6&lGold Key'
+    lore: ['&7','&f● &7Redeem at spawn!','&f● &7Buy keys in &f&n/shop']
+  crimson:
+    material: WHITE_CANDLE
+    name: '&c&lCrimson Key'
+    lore: ['&7','&f● &7Redeem at spawn!','&f● &7Buy keys in &f&n/shop']
+  prime:
+    material: WHITE_CANDLE
+    name: '&b&lPrime Key'
+    lore: ['&7','&f● &7Redeem at spawn!','&f● &7Buy keys in &f&n/shop']
+  amethyst:
+    material: WHITE_CANDLE
+    name: '&5&lAmethyst Key'
+    lore: ['&7','&f● &7Redeem at spawn!','&f● &7Buy keys in &f&n/shop']
