@@ -1,0 +1,19 @@
+settings:  key-material: WHITE_CANDLE
+  key-default-name: '&f&l%crate% Key'
+  key-default-lore:
+    - '&7'
+    - '&f● &7Redeem at spawn!'
+  opening:
+    animation: true
+    duration-ticks: 60
+  confirmation: true
+  sounds:
+    click: UI_BUTTON_CLICK
+    win: ENTITY_PLAYER_LEVELUP
+  bound-blocks: {}
+messages:
+  prefix: '&8[&6Crates&8] &r'
+  no-permission: '&cYou do not have permission.'
+  crate-missing: '&cThat crate does not exist.'
+  key-received: '&aYou received &f%amount% &a%crate% key(s).'
+  crate-opened: '&aCrate opened!'
